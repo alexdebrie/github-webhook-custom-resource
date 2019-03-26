@@ -1,0 +1,24 @@
+service: gh-custom-resource
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: us-east-1
+  environment:
+    GITHUB_TOKEN: ''
+
+functions:
+  githubWebhook:
+    handler: handler.handler
+
+resources:
+  Outputs:
+    GitHubWebhookFunction:
+      Description: "ARN for Github Webhook custom resource function"
+      Value: !GetAtt GithubWebhookLambdaFunction.Arn
+      Export:
+        Name: "GithubWebhookFunction"
+
+plugins:
+  - serverless-python-requirements

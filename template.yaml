@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Example template for using the Github Webhook custom resource
+Parameters:
+  REPO:
+    Type: String
+    Description: The Github repository for which the webhook is configured
+  EVENTS:
+    Type: CommaDelimitedList
+    Description: Events for which you want to subscribe
+    Default: "push, pull_request"
+  ENDPOINT:
+    Type: String
+    Description: The endpoint to which events will be sent
+
+Resources:
+    GithubWebhook:
+      Type: 'Custom::GithubWebhook'
+      Version: '1.0'
+      Properties:
+        ServiceToken: !ImportValue GithubWebhookFunction 
+        Repo: !Ref REPO
+        Events: !Ref EVENTS
+        Endpoint: !Ref ENDPOINT 
